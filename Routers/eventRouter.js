@@ -12,6 +12,7 @@ router.route("/events")
 .get(controller.getAllEvents)
 .post(controller.createEvent)
 .put(controller.updateEvent)
-.delete(controller.deleteEvent)
+.delete(controller.DeleteEvent)
+router.get("/events/:id",controller.GetEventById)
 
 module.exports=router;

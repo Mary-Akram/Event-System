@@ -14,7 +14,7 @@ const server=express();
 mongoose.connect("mongodb://localhost:27017/ITIEventSystem")
         .then(()=>{
             console.log("DB connectd");
-            server.listen(process.env.PORT||8000,()=>{
+            server.listen(process.env.PORT||8080,()=>{
                 console.log("I am Listening .. ")
             });
         })

@@ -1,5 +1,8 @@
 const {validationResult}=require("express-validator");
 const EventSchema=require("../Models/eventModel");
+const speaker=require("./../Models/speakerModel");
+const student=require("./../Models/studentModel");
+
 
 module.exports.getAllEvents=(request,response)=>{
     EventSchema.find({})
@@ -12,7 +15,7 @@ module.exports.getAllEvents=(request,response)=>{
 }
 
 module.exports.createEvent=(request,response,next)=>{
-    if(request.role !=="admin")
+    if(request.role!="admin")
     {
        throw new Error("Not Authorizd");
     }
@@ -66,24 +69,24 @@ module.exports.updateEvent=(request,response,next)=>{
 }
 
 
-module.exports.deleteEvent=(request,response,next)=>{
-
-        if(request.role !=="admin")
-        {
-            throw new Error("Not Authorizd");
+module.exports.DeleteEvent = (req, res, next) => {
+    EventSchema.findByIdAndRemove(req.params.id).then((data) => {
+        if (data) {
+            res.status(200).json({ message: "Event deleted" });
+        } else {
+            res.status(200).json({ message: "Event not found" });
         }
-   
-        Event.deleteOne({_id:request.body.id},{
-          
-        }).then(data=>{
-             if(data.deletedCount==0)
-            throw new Error("Event not exists");
-            response.status(200).json({message:"Evet deleted",data});
-    
-        })
-        .catch(error=>next(error))
-    
+    }).catch(err => {
+        next(err.message);
+    });
 }
-
-
-
+module.exports.GetEventById = (req, res, next) => 
+{
+    EventSchema.findById({_id:req.params.id}).then((data) => {
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(200).json({ message: "Event not found" });
+        }
+    }).catch(err => { next(err.message); });
+}
